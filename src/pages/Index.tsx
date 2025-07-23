@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
+import NewsModal from '@/components/NewsModal';
+import DistrictsSection from '@/components/DistrictsSection';
 
 const Index = () => {
+  const [showNewsModal, setShowNewsModal] = useState(false);
+
+  useEffect(() => {
+    // Показываем новостное окно через 3 секунды после загрузки
+    const timer = setTimeout(() => {
+      setShowNewsModal(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-moscow-light font-sf-text">
       {/* Background Image with Overlay */}
@@ -28,6 +41,20 @@ const Index = () => {
           </div>
         </div>
       </header>
+
+      {/* News Modal */}
+      <NewsModal isOpen={showNewsModal} onClose={() => setShowNewsModal(false)} />
+      
+      {/* Floating News Button */}
+      <div className="fixed bottom-6 right-6 z-20">
+        <Button
+          onClick={() => setShowNewsModal(true)}
+          className="bg-telegram hover:bg-telegram-dark text-white p-4 rounded-full shadow-2xl animate-pulse"
+          size="lg"
+        >
+          <Icon name="Newspaper" size={24} />
+        </Button>
+      </div>
 
       {/* Main Content */}
       <main className="relative z-10 container mx-auto px-4 py-8 space-y-16">
@@ -108,6 +135,9 @@ const Index = () => {
             </div>
           </Card>
         </section>
+
+        {/* Districts Section */}
+        <DistrictsSection />
 
         {/* Contacts Section */}
         <section className="animate-slide-up">
